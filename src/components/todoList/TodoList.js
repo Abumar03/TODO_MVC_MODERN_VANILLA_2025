@@ -12,6 +12,7 @@ import getTemplate from './template'
 export default class TodoList {
   constructor(data) {
     this.domElt = document.querySelector(data.el);
+    this.listDomElt = null;
     DB.setApiURL(data.apiURL);
     this.todos = [];
     this.loadTodos();
@@ -32,8 +33,32 @@ export default class TodoList {
 
   render() {
     this.domElt.innerHTML = getTemplate();
-    this.todos.forEach(todo => 
-    todo.render(this.domElt.querySelector(".todo-list")));
+    this.listDomElt = this.domElt.querySelector(".todo-list");
+    this.todos.forEach((todo) => todo.render(this.listDomElt));
     this.renderItemsLeftCount();
+    this.initEvents();
+  }
+
+  async addTodo(data) {
+    // ajouter dans la DB
+    const todo = await DB.create(data);
+
+    // >Ajouter à this.todos
+    const newTodo = new Todo(todo);
+    this.todos.push(newTodo);
+
+    // Ajouter dans le DOM
+    newTodo.render(this.listDomElt);
+
+    // Relancer le renderIterLeftCount()
+    this.renderItemsLeftCount();
+
+  }
+
+  initEvents() {
+    this.domElt.querySelector('.new-todo').addEventListener("change", (e) => {
+      this.addTodo(e.target.value);
+      e.target.value = "";
+    })
   }
 }
