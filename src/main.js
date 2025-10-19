@@ -8,7 +8,7 @@ import TodoList from "./components/todoList/TodoList";
 //      Appelle le constructor de TodoList avec les données fournies ({ el: "#app", apiURL: 'https://...' }).
 //      L'objet est prêt à être utilisé.
 
-new TodoList({
+window.TodoList = new TodoList({
   el: "#app",
   apiURL: 'https://68e91b7cf2707e6128cd9de9.mockapi.io/'
 });
