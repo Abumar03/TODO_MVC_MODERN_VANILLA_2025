@@ -34,5 +34,10 @@ export default class Todo {
     {
       this.toggleCompleted();
     });
+
+    this.domElt.querySelector('.destroy').addEventListener('click', (e) =>
+    {
+      window.TodoList.deleteOneById(this.id);
+    });
   }
 }
